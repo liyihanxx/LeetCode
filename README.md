@@ -1,0 +1,3 @@
+# LeetCode
+每周至少10道LeetCode的算法题
+每周至少10道LeetCode的数据库题
