@@ -11,6 +11,25 @@ class Solution:
                 else:
                     continue
                     
+                    
+#4. 寻找两个有序数组的中位数(????????)
+#给定两个大小为 m 和 n 的有序数组 nums1 和 nums2。
+#请你找出这两个有序数组的中位数，并且要求算法的时间复杂度为 O(log(m + n))。
+#你可以假设 nums1 和 nums2 不会同时为空
+
+class Solution:
+    def findMedianSortedArrays(self, nums1, nums2):
+        nums = nums1 + nums2
+        nums.sort()
+        length = len(nums)
+        if length == 2:
+            return (nums[0] + nums[1])/2
+        if length % 2 == 0:
+            return (nums[length // 2 - 1] + nums[(length // 2)])/2
+        return nums[length // 2]        
+
+    
+                    
 #11. 盛最多水的容器()
 #给定 n 个非负整数 a1，a2，...，an，每个数代表坐标中的一个点 (i, ai) 。
 #在坐标内画 n 条垂直线，垂直线 i 的两个端点分别为 (i, ai) 和 (i, 0)。找出其中的两条线，使得它们与 x 轴共同构成的容器可以容纳最多的水。
@@ -27,6 +46,57 @@ class Solution:
             else:
                 i=i-1
         return sum
+    
+    
+    
+#15. 三数之和
+#给定一个包含 n 个整数的数组 nums，判断 nums 中是否存在三个元素 a，b，c ，使得 a + b + c = 0 ？找出所有满足条件且不重复的三元组。
+class Solution(object):
+    def threeSum(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: List[List[int]]
+        """
+        # 存储结果列表
+        res_list = []
+        # 对nums列表进行排序，无返回值，排序直接改变nums顺序
+        nums.sort()
+        for i in range(len(nums)):
+            # 如果排序后第一个数都大于0，则跳出循环，不可能有为0的三数之和
+            if nums[i] > 0:
+                break
+            # 排序后相邻两数如果相等，则跳出当前循环继续下一次循环，相同的数只需要计算一次
+            if i > 0 and nums[i] == nums[i-1]:
+                continue
+            # 记录i的下一个位置
+            j = i + 1
+            # 最后一个元素的位置
+            k = len(nums) - 1
+            while j < k:
+                # 判断三数之和是否为0
+                if nums[j] + nums[k] == -nums[i]:
+                    # 把结果加入数组中
+                    res_list.append([nums[i], nums[j], nums[k]])
+                    # 判断j相邻元素是否相等，有的话跳过这个
+                    while j < k and nums[j] == nums[j+1]: j += 1
+                    # 判断后面k的相邻元素是否相等，是的话跳过
+                    while j < k and nums[k] == nums[k-1]: k -= 1
+                    # 没有相等则j+1，k-1，缩小范围
+                    j += 1
+                    k -= 1
+                # 小于-nums[i]的话还能往后取
+                elif nums[j] + nums[k] < -nums[i]:
+                    j += 1
+                else:
+                    k -= 1
+        return res_list
+
+
+if __name__ == '__main__':
+    s = Solution()
+    result_list = s.threeSum([-1, 0, 1, 2, -1, -4])
+    print(result_list)
+
     
     
 #26. 删除排序数组中的重复项
