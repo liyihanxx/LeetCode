@@ -123,6 +123,58 @@ class Solution:
 
         return res
     
+#18. 四数之和？？？？
+#给定一个包含 n 个整数的数组 nums 和一个目标值 target，判断 nums 中是否存在四个元素 a，b，c 和 d ，
+#使得 a + b + c + d 的值与 target 相等？找出所有满足条件且不重复的四元组
+
+class Solution(object):
+    def fourSum(self, nums, target):
+        """
+        :type nums: List[int]
+        :type target: int
+        :rtype: List[List[int]]
+        """
+        # res为集合，可以去重
+        res, dic = set(), {}
+        # 获取数组nums的长度
+        num_len = len(nums)
+        # 排序，无返回值
+        nums.sort()
+        # 遍历0-num_len
+        for i in range(num_len):
+            # 遍历1到num_len
+            for j in range(i+1, num_len):
+                # 获取两者和
+                key = nums[i] + nums[j]
+                # 判断是否在dic字典中，不在的话，则把元组类型i,j的列表加入字典
+                if key not in dic.keys():
+                    dic[key] = [(i, j)]
+                else:
+                    # 在dic中则加入相应key的列表中
+                    dic[key].append((i, j))
+        # 遍历0-num_len
+        for i in range(num_len):
+            # 遍历1-num_len-2
+            for j in range(i+1, num_len-2):
+                # exp作为目标值和两者的差，需要去dic中判断是否存在
+                exp = target - nums[i] - nums[j]
+                # 判断差值exp是否存在dic字典的keys中
+                if exp in dic.keys():
+                    # 在dic中则遍历dic[exp]
+                    for tmpIndex in dic[exp]:
+                        # 如果tmpIndex[0]代表的i 大于 j 意味着四个值没有重复，加入结果结合中
+                        if tmpIndex[0] > j:
+                            # 集合会去重
+                            res.add((nums[i], nums[j], nums[tmpIndex[0]], nums[tmpIndex[1]]))
+        # 对结果进行列表化
+        return [list(i) for i in res]
+
+
+if __name__ == '__main__':
+    s = Solution()
+    print(s.fourSum([1, 0, -1, 0, -2, 2], 0))
+
+    
     
 
 
@@ -155,4 +207,51 @@ class Solution:
             else:
                 i=i+1
         return len(nums)
+    
+ #31. 下一个排列  ？？？？？
+#实现获取下一个排列的函数，算法需要将给定数字序列重新排列成字典序中下一个更大的排列。
+
+#如果不存在下一个更大的排列，则将数字重新排列成最小的排列（即升序排列）。
+
+#必须原地修改，只允许使用额外常数空间。
+
+#以下是一些例子，输入位于左侧列，其相应输出位于右侧列。
+#1,2,3 → 1,3,2
+#3,2,1 → 1,2,3
+#1,1,5 → 1,5,1
+
+class Solution:
+    def nextPermutation(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: void Do not return anything, modify nums in-place instead.
+        """
+        i = len(nums) - 1
+        if len(list(set(nums))) != 1:
+            
+            #先从尾部升序结束的点
+            while i - 1 >= 0:
+                if nums[i] <= nums[i - 1]:
+                    i = i - 1
+                else:
+                    break
+            #如果前面还有至少一个位置
+            if i - 1 >= 0:
+                j = i - 1 
+                t = len(nums) - 1
+                #从后往前找第一个大于j位置上的数
+                while nums[t] <= nums[j]:
+                    t -= 1
+                nums[t], nums[j] = nums[j], nums[t]
+                a = sorted(nums[i:])
+                a_index = 0
+                #因为我不知道python分段排序的方法，于是就手动排序
+                #以下是对nums的排序
+                for index in range(i, len(nums)):
+                    nums[index] = a[a_index]
+                    a_index += 1
+            #没有位置则sort
+            else:
+                nums.sort()
+
         
