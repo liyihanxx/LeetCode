@@ -97,7 +97,35 @@ if __name__ == '__main__':
     result_list = s.threeSum([-1, 0, 1, 2, -1, -4])
     print(result_list)
 
+#16. 最接近的三数之和
+#给定一个包括 n 个整数的数组 nums 和 一个目标值 target。
+#找出 nums 中的三个整数，使得它们的和与 target 最接近。返回这三个数的和。假定每组输入只存在唯一答案。
+class Solution:
+    def threeSumClosest(self, nums, target):
+        mindiff = 10000
+        nums.sort()
+        res = 0
+        for i in range(len(nums)):
+            left = i+1
+            right = len(nums)-1
+            while left < right:
+                sum = nums[left] + nums[right] + nums[i]
+                diff = abs(target - sum)
+                if diff < mindiff:
+                    mindiff = diff
+                    res = sum
+                if target == sum:
+                    return sum
+                elif sum < target:
+                    left += 1
+                else:
+                    right -= 1                      
+
+        return res
     
+    
+
+
     
 #26. 删除排序数组中的重复项
 #给定一个排序数组，你需要在原地删除重复出现的元素，使得每个元素只出现一次，返回移除后数组的新长度。
